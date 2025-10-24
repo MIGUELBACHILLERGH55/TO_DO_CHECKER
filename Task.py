@@ -1,10 +1,11 @@
 import json
 
 class Task:
-    def __init__(self, title: str, description: str) -> None:
+    def __init__(self, title: str, description: str, done=False) -> None:
         self.title = title
         self.description = description
         self._dict = None
+        self.done = done
     
     def __repr__(self):
         return f'Task(title={self.title}, description={self.description})'
@@ -22,6 +23,26 @@ class Task:
             raise ValueError('Title must be at least 1 char long.')
         self._dict = None
         self._title = value.upper()
+    
+    @property 
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value: str):
+        if not isinstance(value, str):
+            raise TypeError('Description must be a string.')
+        if not len(value) > 0:
+            raise ValueError('Description cannot be empty.')
+
+        value = value.strip().capitalize()
+
+        value = value if value.endswith('.') else value + '.'
+
+        self._description = value
+
+
+
     
 
     @property
