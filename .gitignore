@@ -1,0 +1,8 @@
+
+
+# Ignore all JSON files.
+*.json
+
+
+# Ignore all __pycache__ folders ant their content.
+__pycache__/
