@@ -9,7 +9,7 @@ if __name__ == '__main__':
     mode = sys.argv[1]
     
     # It is probably better to encapsulate all of this in a method.
-    TASK_LIST_JSON_FILE_DEFAULT = 'todo_list.json'
+    TASK_LIST_JSON_FILE_DEFAULT = 'todo.json'
     
     # Does a todo_list.json file exits in the current directory ?
     try: 
