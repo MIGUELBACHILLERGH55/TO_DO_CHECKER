@@ -3,9 +3,16 @@ from pprint import pprint
 import json
 
 class TaskList:
-    def __init__(self, default_saving_dir):
+    def __init__(self, default_saving_dir="todo.json"):
         self._data = []
         self._default_saving_dir = default_saving_dir
+    
+    # DONE: Add str method
+    def __str__(self):
+        tasks_as_string = (str(task) for task in self._data)
+        joined_tasks = ", ".join(tasks_as_string)
+
+        return f"TaskList({joined_tasks})"
 
     def add(self, task: Task) -> None:
         if not isinstance(task, Task):
@@ -72,22 +79,49 @@ class TaskList:
         with open(self._default_saving_dir, 'w') as f:
             json.dump(data, f)
 
+    def to_dict_list(self):
+        data = [task.dict for task in self._data]
+        return data
+
+    def from_dict(self, value):
+        all_tasks = [
+                    Task(k,v) for task_dict in value
+                    for (k,v) in task_dict.items()
+                    ]
+
+        for task in all_tasks:
+            self.add(task)
+
+        return self
+
+
 
 
 
 # Usage example
-todo = [
-    Task(title='Buy cheese', description='from Valsequillo.'),
-    Task(title='Buy apples', description='3kg at Mercadona.'),
-    Task(title='Clean the car', description='At the Disa car wash.'),
-    Task(title='Send an email', description='To mom.'),
-    Task(title='Pick up Alberto', description='Arrives at 5:00.', done=True)
-]
-current_task_list = TaskList('todo.json')
+#
+if __name__ == "__main__":
+    todo = [
+        Task(title='Buy cheese', description='from Valsequillo.'),
+        Task(title='Buy apples', description='3kg at Mercadona.'),
+        Task(title='Clean the car', description='At the Disa car wash.'),
+        Task(title='Send an email', description='To mom.'),
+        Task(title='Pick up Alberto', description='Arrives at 5:00.', done=True)
+    ]
+    current_task_list = TaskList('todo.json')
 
-for task in todo:
-    current_task_list.add(task)
+    for task in todo:
+        current_task_list.add(task)
 
-current_task_list.list_tasks()
+    current_task_list.list_tasks()
+
+    list_dict = current_task_list.to_dict_list()
+
+    new_task_list = TaskList()
+
+    new_task_list.from_dict(list_dict)
+
+    print(new_task_list)
+
 
 
